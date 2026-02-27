@@ -8,4 +8,6 @@ const connectionString = `${process.env.DATABASE_URL}`;
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter }).$extends(withAccelerate());
 
+// const prisma = new PrismaClient({ accelerateUrl: connectionString }).$extends(withAccelerate());
+
 export { prisma };
