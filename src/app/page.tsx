@@ -12,14 +12,14 @@ export default async function Home() {
     "use server";
 
     const car: ICar = {
-      id: "1233qqwe",
+      id: taxis.length + 3 + "",
       image: "https://s1.iconbird.com/ico/0612/iconslandtransport/w256h2561339251284ExcavatorYellow.png",
-      name: "BMW",
-      color: "RED",
-      number: "О111ОО105",
+      name: "BMW" + taxis.length,
+      color: "RED" + taxis.length,
+      number: "О111ОО105" + taxis.length,
       routes: ["По селу", "В город", "В поселок даже"],
-      description: "Там тут да",
-      driverId: "123",
+      description: "Там тут да" + taxis.length,
+      driverId: "123" + taxis.length,
     };
     createCar(car);
   };
