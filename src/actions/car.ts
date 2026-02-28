@@ -3,7 +3,7 @@ import { ICar } from "@/types/car";
 
 export async function getCars() {
   try {
-    const cars = await prisma.car.findMany({ cacheStrategy: { ttl: 60 } });
+    const cars = await prisma.car.findMany();
     return { success: true, cars };
   } catch (error) {
     console.log("Ошибка загрузки машин:", error);
