@@ -14,6 +14,24 @@ enum Role {
   OWNER
 }
 
+enum TransportType {
+  PASSENGER
+  CARGO
+  PASSENGER_CARGO
+}
+
+enum DriverGroupType {
+  FAVORITES
+  BLOCKED
+  CUSTOM
+}
+
+enum RideStatus {
+  ACTIVE
+  ACCEPTED
+  CANCELLED
+}
+
 model User {
   id        String   @id @default(cuid())
   phone     String?  @unique
@@ -24,18 +42,78 @@ model User {
   updatedAt DateTime @updatedAt
 
   driverProfile DriverProfile?
+  driverGroups  DriverGroup[]
+  ridesCalled    Ride[] @relation("userRidesCalled")
 }
 
 model DriverProfile {
-  id           String   @id @default(cuid())
-  userId       String   @unique
-  carBrand     String
-  carModel     String
-  carNumber    String   @unique
-  carColor     String
-  carPhoto     String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String        @id @default(cuid())
+  userId        String        @unique
+  carBrand      String
+  carModel      String
+  carNumber     String        @unique
+  carColor      String
+  carPhoto      String?
+  transportType TransportType
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  routes           Route[]
+  groupMemberships DriverGroupMember[]
+  ridesAccepted    Ride[] @relation("driverRidesAccepted")
+}
+
+model Route {
+  id              String   @id @default(cuid())
+  name            String
+  driverProfileId String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  driverProfile DriverProfile @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+}
+
+model DriverGroup {
+  id        String           @id @default(cuid())
+  name      String
+  type      DriverGroupType
+  userId    String
+  isDefault Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  user    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  members DriverGroupMember[]
+}
+
+model DriverGroupMember {
+  id              String   @id @default(cuid())
+  driverGroupId   String
+  driverProfileId String
+  createdAt       DateTime @default(now())
+
+  driverGroup   DriverGroup   @relation(fields: [driverGroupId], references: [id], onDelete: Cascade)
+  driverProfile DriverProfile @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([driverGroupId, driverProfileId])
+}
+
+model Ride {
+  id              String    @id @default(cuid())
+  userId          String
+  driverProfileId String?
+  addressFrom     String
+  addressTo       String
+  latitudeFrom    Float
+  longitudeFrom   Float
+  latitudeTo      Float
+  longitudeTo     Float
+  status          RideStatus @default(ACTIVE)
+  scheduledTime   DateTime
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user          User           @relation("userRidesCalled", fields: [userId], references: [id], onDelete: Cascade)
+  driverProfile DriverProfile? @relation("driverRidesAccepted", fields: [driverProfileId], references: [id], onDelete: SetNull)
 }
