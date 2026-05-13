@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <main className="shell">
       <div className="hero">
-        <p className="eyebrow">Next.js + Prisma 7</p>
+        <p className="eyebrow">Юзер</p>
         <h1>Users from your database, loaded on the server.</h1>
         <p className="lede">
           This page reads from <code>src/app/page.tsx</code> using the Prisma instance in <code>src/lib/prisma.ts</code>
@@ -44,7 +44,8 @@ export default async function Home() {
               <li key={user.id}>
                 <div>
                   <strong>{user.name ?? "Unnamed user"}</strong>
-                  {/* <p>{user.email}</p> */}
+                  <p>{user.phone ?? "No phone number"}</p>
+                  <p>{user.role}</p>
                 </div>
                 <time dateTime={user.createdAt.toISOString()}>{formatter.format(user.createdAt)}</time>
               </li>

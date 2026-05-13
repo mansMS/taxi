@@ -32,6 +32,25 @@ enum RideStatus {
   CANCELLED
 }
 
+enum CarColor {
+  WHITE
+  BLACK
+  GRAY
+  DARK_GRAY
+  BLUE
+  DARK_BLUE
+  LIGHT_BLUE
+  RED
+  BURGUNDY
+  GREEN_DARK
+  GREEN
+  YELLOW
+  ORANGE
+  BROWN
+  PURPLE
+  GOLD
+}
+
 model User {
   id        String   @id @default(cuid())
   phone     String?  @unique
@@ -52,7 +71,7 @@ model DriverProfile {
   carBrand      String
   carModel      String
   carNumber     String        @unique
-  carColor      String
+  carColor      CarColor
   carPhoto      String?
   transportType TransportType
   createdAt     DateTime      @default(now())
