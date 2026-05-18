@@ -82,6 +82,7 @@ model DriverProfile {
   routes           Route[]
   groupMemberships DriverGroupMember[]
   ridesAccepted    Ride[] @relation("driverRidesAccepted")
+  targetedRides    RideDriverProfile[]
 }
 
 model Route {
@@ -134,6 +135,19 @@ model Ride {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  user          User           @relation("userRidesCalled", fields: [userId], references: [id], onDelete: Cascade)
-  driverProfile DriverProfile? @relation("driverRidesAccepted", fields: [driverProfileId], references: [id], onDelete: SetNull)
+  user             User               @relation("userRidesCalled", fields: [userId], references: [id], onDelete: Cascade)
+  driverProfile    DriverProfile?     @relation("driverRidesAccepted", fields: [driverProfileId], references: [id], onDelete: SetNull)
+  targetedDrivers  RideDriverProfile[]
+}
+
+model RideDriverProfile {
+  id              String        @id @default(cuid())
+  rideId          String
+  driverProfileId String
+  createdAt       DateTime      @default(now())
+
+  ride            Ride          @relation(fields: [rideId], references: [id], onDelete: Cascade)
+  driverProfile   DriverProfile @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([rideId, driverProfileId])
 }
