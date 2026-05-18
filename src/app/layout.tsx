@@ -4,10 +4,12 @@ import InstallPrompt from "./components/InstallPrompt";
 
 import "./globals.css";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const metadata: Metadata = {
   title: "Dylym Taxi",
   description: "Сервис такси в Дылыме",
-  manifest: "/manifest",
+  manifest: isProduction ? "/manifest" : undefined,
   appleWebApp: {
     capable: true,
     title: "D-Такси",
@@ -33,8 +35,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SWRegister />
-        <InstallPrompt />
+        {isProduction ? <SWRegister /> : null}
+        {isProduction ? <InstallPrompt /> : null}
         {children}
       </body>
     </html>
