@@ -67,8 +67,7 @@ model User {
 }
 
 model DriverProfile {
-  id            String        @id @default(cuid())
-  userId        String        @unique
+  userId        String        @id
   carBrand      String
   carModel      String
   carNumber     String        @unique
@@ -92,7 +91,7 @@ model Route {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  driverProfile DriverProfile @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+  driverProfile DriverProfile @relation(fields: [driverProfileId], references: [userId], onDelete: Cascade)
 }
 
 model DriverGroup {
@@ -115,7 +114,7 @@ model DriverGroupMember {
   createdAt       DateTime @default(now())
 
   driverGroup   DriverGroup   @relation(fields: [driverGroupId], references: [id], onDelete: Cascade)
-  driverProfile DriverProfile @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+  driverProfile DriverProfile @relation(fields: [driverProfileId], references: [userId], onDelete: Cascade)
 
   @@unique([driverGroupId, driverProfileId])
 }
@@ -136,7 +135,7 @@ model Ride {
   updatedAt       DateTime  @updatedAt
 
   user             User               @relation("userRidesCalled", fields: [userId], references: [id], onDelete: Cascade)
-  driverProfile    DriverProfile?     @relation("driverRidesAccepted", fields: [driverProfileId], references: [id], onDelete: SetNull)
+  driverProfile    DriverProfile?     @relation("driverRidesAccepted", fields: [driverProfileId], references: [userId], onDelete: SetNull)
   targetedDrivers  RideDriverProfile[]
 }
 
@@ -147,7 +146,7 @@ model RideDriverProfile {
   createdAt       DateTime      @default(now())
 
   ride            Ride          @relation(fields: [rideId], references: [id], onDelete: Cascade)
-  driverProfile   DriverProfile @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+  driverProfile   DriverProfile @relation(fields: [driverProfileId], references: [userId], onDelete: Cascade)
 
   @@unique([rideId, driverProfileId])
 }

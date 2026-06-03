@@ -57,7 +57,6 @@ export const driverRepository = {
     });
 
     return drivers.map((driver) => ({
-      id: driver.id,
       userId: driver.userId,
       carBrand: driver.carBrand,
       carModel: driver.carModel,
@@ -68,7 +67,7 @@ export const driverRepository = {
       createdAt: driver.createdAt.toISOString(),
       updatedAt: driver.updatedAt.toISOString(),
       user: {
-        id: driver.user.id,
+        userId: driver.user.id,
         name: driver.user.name ?? undefined,
         phone: driver.user.phone ?? undefined,
         photo: driver.user.photo ?? undefined,
@@ -78,11 +77,11 @@ export const driverRepository = {
   },
 
   /**
-   * Получить данные водителя по ID
+   * Получить данные водителя по ID пользователя
    */
-  async getDriverById(id: string): Promise<DriverProfileResponseDto | null> {
+  async getDriverById(userId: string): Promise<DriverProfileResponseDto | null> {
     const driver = await prisma.driverProfile.findUnique({
-      where: { id },
+      where: { userId },
       include: {
         user: {
           select: {
@@ -106,7 +105,6 @@ export const driverRepository = {
     }
 
     return {
-      id: driver.id,
       userId: driver.userId,
       carBrand: driver.carBrand,
       carModel: driver.carModel,
@@ -117,7 +115,7 @@ export const driverRepository = {
       createdAt: driver.createdAt.toISOString(),
       updatedAt: driver.updatedAt.toISOString(),
       user: {
-        id: driver.user.id,
+        userId: driver.user.id,
         name: driver.user.name ?? undefined,
         phone: driver.user.phone ?? undefined,
         photo: driver.user.photo ?? undefined,

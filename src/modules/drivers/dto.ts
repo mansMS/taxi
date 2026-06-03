@@ -20,7 +20,7 @@ export interface UpdateDriverProfileDto {
 }
 
 export interface DriverUserDto {
-  id: string;
+  userId: string;
   name?: string;
   phone?: string;
   photo?: string;
@@ -32,7 +32,6 @@ export interface DriverRouteDto {
 }
 
 export interface DriverProfileResponseDto {
-  id: string;
   userId: string;
   carBrand: string;
   carModel: string;
@@ -62,13 +61,13 @@ export interface DriverGroupDto {
   isDefault: boolean;
   createdAt: string;
   updatedAt: string;
-  members?: Array<{ driverProfileId: string }>;
+  members?: Array<{ driverUserId: string }>;
 }
 
 export interface CreateRideForGroupDto {
   userId: string;
   groupId?: string;
-  driverProfileIds?: string[];
+  driverUserIds?: string[];
   addressFrom: string;
   addressTo: string;
   latitudeFrom: number;
@@ -79,13 +78,13 @@ export interface CreateRideForGroupDto {
 }
 
 export interface RideTargetDriverDto {
-  driverProfileId: string;
+  driverUserId: string;
 }
 
 export interface RideResponseDto {
   id: string;
   userId: string;
-  driverProfileId?: string;
+  driverUserId?: string;
   addressFrom: string;
   addressTo: string;
   latitudeFrom: number;
